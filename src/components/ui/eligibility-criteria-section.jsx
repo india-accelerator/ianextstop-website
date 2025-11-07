@@ -129,33 +129,38 @@ export const EligibilityCriteriaSection = () => {
   const criteria = [
     {
       number: '01',
-      title: 'Incorporated',
-      description: 'In India (year if we want to specify)',
+      title: <>Stage of the<br />Startup</>,
+      description: 'Seed to Pre-Series Not ideal Idea-stage ventures without proof of concept or prototype',
     },
     {
       number: '02',
-      title: 'Product Stage',
-      description: 'MVP',
+      title: 'Incorporated',
+      description: 'In India (2018 and beyond)',
     },
     {
       number: '03',
-      title: 'Previous Funding',
-      description: 'Not more than XX Cr.',
+      title: 'Founding Team',
+      description: 'Minimum one full-time founder (no side projects).',
     },
     {
       number: '04',
-      title: 'USP',
-      description: 'Innovative approach / IP / proprietary tech they can demonstrate or showcase',
+      title: <>Product / Service<br />Readiness</>,
+      description: 'Demonstrated problem–solution fit with evidence of traction (even if small).',
     },
     {
       number: '05',
-      title: 'Founding Team Commitment',
-      description: 'Full-time founder(s)',
+      title: <>Traction &<br />Metrics</>,  
+      description: 'Seed Stage - Early revenue or strong user growth (depending on model). Evidence of market validation: pilots, letters of intent (LOIs), partnerships, or customer feedback.',
     },
     {
       number: '06',
-      title: 'Revenue',
-      description: 'Not mandatory, but traction preferred',
+      title: 'Growth Stage',
+      description: 'Strong MoM growth',
+    },
+    {
+      number: '07',
+      title: 'Business Model',
+      description: 'A scalable model — technology or process that can expand beyond local markets. preference for innovation-led differentiation — tech, IP, or unique distribution.',
     },
   ];
 
@@ -212,7 +217,7 @@ export const EligibilityCriteriaSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            PROGRAM HIGHLIGHTS
+            Eligibility Criteria
           </motion.div>
           <motion.h2 
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal mb-4 text-white px-2"
@@ -222,7 +227,7 @@ export const EligibilityCriteriaSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Eligibility Criteria
+            WHO CAN APPLY?
           </motion.h2>
         </motion.div>
 

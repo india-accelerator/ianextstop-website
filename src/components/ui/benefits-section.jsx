@@ -179,7 +179,7 @@ export const BenefitsSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-12 sm:mb-8"
           variants={headerVariants}
         >
           <motion.div 
@@ -193,7 +193,7 @@ export const BenefitsSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            THE BENEFITS
+            Step Into the World
           </motion.div>
           <motion.h2 
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 text-white"
@@ -218,7 +218,7 @@ export const BenefitsSection = () => {
         </motion.div>
 
         {/* Benefit Cards Grid - Horizontal scroll on mobile, grid on larger screens */}
-        <div className="overflow-x-auto sm:overflow-visible -mx-4 sm:mx-0 px-4 sm:px-0 mb-12">
+        {/* <div className="overflow-x-auto sm:overflow-visible -mx-4 sm:mx-0 px-4 sm:px-0 mb-12">
           <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 min-w-max sm:min-w-0 sm:items-stretch">
             {benefits.map((benefit, index) => (
               <div key={index} className="shrink-0 w-[280px] sm:w-auto sm:flex sm:flex-col">
@@ -231,11 +231,11 @@ export const BenefitsSection = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* World Map Section */}
         <motion.div 
-          className="mb-12 sm:mb-16 mt-16"
+          className="mb-12 sm:mb-5 mt-5"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

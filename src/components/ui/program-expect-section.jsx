@@ -120,7 +120,7 @@ export const ProgramExpectSection = () => {
     },
     {
       icon: Layers,
-      title: 'Growth Amplifier (IA ecosystem)',
+      title: 'Growth Amplifier <br/>(IA ecosystem)',
       description: 'Unlock funding and pilot opportunities.',
     },
   ];
@@ -179,7 +179,7 @@ export const ProgramExpectSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            ABOUT THE PROGRAM
+            THE OUTCOME
           </motion.div>
           <motion.h2 
             className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-white"

@@ -169,25 +169,21 @@ export const CounterSection = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Counter Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           <CounterItem
             value={50}
             prefix="₹"
             suffix=" Cr"
-            description="Capital Commitments Across cities within a year"
+            description=<>Capital commitments across cities<br />(within a year)</>
           />
           <CounterItem
             value={5}
             // suffix=" State"
-            description="cities"
+            description="Cities"
           />
           <CounterItem
-            value="5-7 startups"
-            description="Shortlisted"
-          />
-          <CounterItem
-            value="Stages"
-            description="Early to Growth stage"
+            value="5 Startups"
+            description="To be shortlisted"
           />
         </div>
       </div>

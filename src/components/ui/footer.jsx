@@ -40,7 +40,7 @@ export const Footer = () => {
               className="text-base sm:text-lg md:text-xl font-medium text-white/90"
               style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
             >
-              Socials
+              Follow Us
             </h3>
 
             {/* Social Media Icons */}
