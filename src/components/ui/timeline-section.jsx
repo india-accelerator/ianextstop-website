@@ -130,7 +130,7 @@ export const TimelineSection = () => {
             </motion.p>
 
             {/* Contact Information */}
-            <motion.p 
+            {/* <motion.p 
               className="text-xs sm:text-sm md:text-base lg:text-lg mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-4"
               style={{ 
                 fontFamily: 'var(--font-poppins), sans-serif',
@@ -146,7 +146,7 @@ export const TimelineSection = () => {
               >
                 support@name.com
               </a>
-            </motion.p>
+            </motion.p> */}
 
             {/* CTA Button */}
             <motion.div 
