@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { motion } from 'framer-motion';
 
 // Counter component with animation
 const CounterItem = ({ value, description, prefix = '', suffix = '', duration = 2000 }) => {
@@ -98,40 +99,77 @@ const CounterItem = ({ value, description, prefix = '', suffix = '', duration = 
     : (typeof count === 'string' ? count : value);
 
   return (
-    <div 
+    <motion.div 
       ref={ref} 
       className="flex flex-col items-center text-center py-6 sm:py-8"
+      initial={{ opacity: 0, y: 30 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{
+        type: 'spring',
+        stiffness: 100,
+        damping: 15,
+        duration: 0.6
+      }}
     >
       {/* Main Value */}
-      <div 
+      <motion.div 
         className="text-2xl sm:text-3xl md:text-4xl font-normal mb-2 text-white"
         style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+        transition={{
+          type: 'spring',
+          stiffness: 150,
+          damping: 15,
+          delay: 0.1
+        }}
       >
         {displayValue}
-      </div>
+      </motion.div>
       
       {/* Description */}
-      <div 
+      <motion.div 
         className="text-xs sm:text-sm md:text-sm text-white font-light px-2"
         style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
+        initial={{ opacity: 0 }}
+        animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
+        transition={{
+          duration: 0.5,
+          delay: 0.3
+        }}
       >
         {description}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
 export const CounterSection = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
+
   return (
-    <section 
+    <motion.section 
       className="w-full relative overflow-hidden py-8 sm:py-2"
       style={{
         background: 'linear-gradient(90deg, #782821 19.71%, #EE594C 52.88%, #782821 84.13%)'
       }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={containerVariants}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Counter Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           <CounterItem
             value={50}
             prefix="₹"
@@ -139,9 +177,9 @@ export const CounterSection = () => {
             description="Capital Commitments Across cities within a year"
           />
           <CounterItem
-            value={1}
-            suffix=" State"
-            description="5 cities"
+            value={5}
+            // suffix=" State"
+            description="cities"
           />
           <CounterItem
             value="5-7 startups"
@@ -153,7 +191,7 @@ export const CounterSection = () => {
           />
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

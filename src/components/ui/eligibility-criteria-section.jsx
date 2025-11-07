@@ -1,19 +1,34 @@
 'use client';
 
 import * as React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 
 const CriteriaItem = ({ number, title, description, index }) => {
   const [isHovered, setIsHovered] = React.useState(false);
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 100,
+        damping: 15,
+        duration: 0.6,
+        delay: index * 0.1
+      }
+    }
+  };
+
   return (
-    <div 
+    <motion.div 
       className="group relative py-4 sm:py-6 md:py-8 border-b border-white/20 transition-all duration-300 cursor-pointer"
-      style={{
-        animationDelay: `${index * 100}ms`,
-        opacity: 0,
-        animation: 'fadeInUp 0.6s ease-out forwards'
-      }}
+      variants={itemVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={() => setIsHovered(true)}
@@ -106,7 +121,7 @@ const CriteriaItem = ({ number, title, description, index }) => {
           isHovered ? 'w-full opacity-100' : 'w-0 opacity-0'
         }`}
       />
-    </div>
+    </motion.div>
   );
 };
 
@@ -144,69 +159,95 @@ export const EligibilityCriteriaSection = () => {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const headerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 100,
+        damping: 15,
+        duration: 0.8
+      }
+    }
+  };
+
   return (
-    <>
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
-      
-      <section 
-        className="w-full py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden"
-        style={{
-          background: 'linear-gradient(180deg, #E65B4E 0%, #922A20 100%)'
-        }}
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          {/* Section Header */}
-          <div className="text-center mb-8 sm:mb-12 md:mb-16">
-            <div 
-              className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3 sm:mb-4 text-white"
-              style={{ 
-                fontFamily: 'var(--font-poppins), sans-serif'
-              }}
-            >
-              PROGRAM HIGHLIGHTS
-            </div>
-            <h2 
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal mb-4 text-white px-2"
-              style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
-            >
-              Eligibility Criteria
-            </h2>
-          </div>
+    <motion.section 
+      id="eligibility-criteria"
+      className="w-full py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden"
+      style={{
+        background: 'linear-gradient(180deg, #E65B4E 0%, #922A20 100%)'
+      }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={containerVariants}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-8 sm:mb-12 md:mb-16"
+          variants={headerVariants}
+        >
+          <motion.div 
+            className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3 sm:mb-4 text-white"
+            style={{ 
+              fontFamily: 'var(--font-poppins), sans-serif'
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            PROGRAM HIGHLIGHTS
+          </motion.div>
+          <motion.h2 
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal mb-4 text-white px-2"
+            style={{ fontFamily: 'var(--font-poppins), sans-serif' }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Eligibility Criteria
+          </motion.h2>
+        </motion.div>
 
-          {/* Criteria List */}
-          <div className="max-w-6xl mx-auto px-2 sm:px-0">
-            {criteria.map((item, index) => (
-              <CriteriaItem
-                key={index}
-                number={item.number}
-                title={item.title}
-                description={item.description}
-                index={index}
-              />
-            ))}
-          </div>
+        {/* Criteria List */}
+        <div className="max-w-6xl mx-auto px-2 sm:px-0">
+          {criteria.map((item, index) => (
+            <CriteriaItem
+              key={index}
+              number={item.number}
+              title={item.title}
+              description={item.description}
+              index={index}
+            />
+          ))}
         </div>
+      </div>
 
-        {/* Decorative gradient overlay */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-          }}
-        />
-      </section>
-    </>
+      {/* Decorative gradient overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+        }}
+      />
+    </motion.section>
   );
 };
 

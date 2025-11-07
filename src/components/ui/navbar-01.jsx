@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { usePathname, useRouter } from 'next/navigation';
 
 // Simple logo component for the navbar
 const Logo = (props) => {
@@ -117,9 +119,9 @@ const CloseIcon = ({ className, ...props }) => (
 const defaultNavigationLinks = [
   { href: '#about', label: 'About' },
   { href: '#what-to-expect', label: 'What To Expect' },
-  { href: '#timeline', label: 'Timeline' },
   { href: '#eligibility-criteria', label: 'Eligibility Criteria' },
   { href: '#why-bigshift', label: 'Why BIGShift?' },
+  { href: '#timeline', label: 'Queries' },
 ];
 
 export const Navbar01 = React.forwardRef(({
@@ -134,13 +136,22 @@ export const Navbar01 = React.forwardRef(({
   onSignInClick,
   onCtaClick,
   showSubNavbar = true,
-  subNavbarText = "igniting a movement to power bold ideas from India's emerging startup hubs.",
+  subNavbarText = "Igniting a movement to power bold ideas from India's emerging startup hubs.",
   ...props
 }, ref) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isSubNavbarVisible, setIsSubNavbarVisible] = useState(showSubNavbar);
   const [isSubNavbarClosing, setIsSubNavbarClosing] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const containerRef = useRef(null);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const checkWidth = () => {
@@ -162,6 +173,71 @@ export const Navbar01 = React.forwardRef(({
     };
   }, []);
 
+  // Handle scroll for glassy effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY || window.pageYOffset;
+      setIsScrolled(scrollPosition > 10); // Trigger glassy effect after 10px scroll
+    };
+
+    // Check initial scroll position
+    handleScroll();
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Handle smooth scroll to section
+  const handleNavClick = (e, href, isMobileClick = false) => {
+    e.preventDefault();
+    
+    // Close mobile menu if open
+    setIsMenuOpen(false);
+    
+    // Extract the ID from href (e.g., '#about' -> 'about')
+    const targetId = href.replace('#', '');
+    
+    // Check if we're on the home page
+    const isOnHomePage = pathname === '/';
+    
+    // If not on home page (especially for mobile clicks), navigate to home page first
+    if (!isOnHomePage && (isMobileClick || isMobile)) {
+      // Navigate to home page with hash using window.location for reliable hash navigation
+      window.location.href = `/${href}`;
+      return;
+    }
+    
+    // If on home page, try to scroll to the section
+    if (isOnHomePage) {
+      // Use setTimeout to ensure DOM is ready
+      setTimeout(() => {
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          // Calculate offset for navbar height
+          const navbarHeight = 80; // Approximate navbar height
+          const targetPosition = targetElement.offsetTop - navbarHeight;
+          
+          // Smooth scroll to the target
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        } else {
+          // If element not found, navigate to the hash anyway
+          window.location.href = href;
+        }
+      }, 100);
+    } else {
+      // For desktop on other pages, navigate to home with hash
+      router.push(`/${href}`);
+    }
+  };
+
   // Combine refs
   const combinedRef = React.useCallback((node) => {
     containerRef.current = node;
@@ -174,31 +250,46 @@ export const Navbar01 = React.forwardRef(({
 
   return (
     <div className="sticky top-0 z-50">
-      <header
+      <motion.header
         ref={combinedRef}
+        initial={{ opacity: 0, y: -20 }}
+        animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+        transition={{
+          type: 'spring',
+          stiffness: 300,
+          damping: 30,
+          duration: 0.6
+        }}
         className={cn(
-          'w-full px-4 md:px-6 [&_*]:no-underline',
+          'w-full px-3 sm:px-4 md:px-6 [&_*]:no-underline transition-all duration-300',
+          isScrolled 
+            ? 'border-b border-white/10' 
+            : '',
           className
         )}
-        style={{ backgroundColor: '#1E071EE5' }}
+        style={isScrolled ? {
+          backgroundColor: 'rgba(30, 7, 30, 0.85)',
+          backdropFilter: 'blur(12px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+        } : { backgroundColor: '#1E071EE5' }}
         {...props}
       >
-        <div className="container mx-auto flex h-16 max-w-screen-2xl items-center gap-4 relative">
+        <div className="container mx-auto flex h-14 sm:h-16 max-w-screen-2xl items-center gap-2 sm:gap-3 md:gap-4 relative">
         {/* Left side */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Mobile menu trigger */}
           {isMobile && (
-            <Popover>
+            <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <PopoverTrigger asChild>
                 <Button
-                  className="group h-9 w-9 hover:bg-accent hover:text-accent-foreground"
+                  className="group h-8 w-8 sm:h-9 sm:w-9 hover:bg-white/10 hover:text-white text-white"
                   variant="ghost"
                   size="icon"
                 >
-                  <HamburgerIcon />
+                  <HamburgerIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-48 p-2">
+              <PopoverContent align="start" className="w-56 p-2 bg-[#1E071E] border-white/10">
                 <NavigationMenu className="max-w-none">
                   <NavigationMenuList className="flex-col items-start gap-1">
                     {navigationLinks.map((link, index) => (
@@ -206,12 +297,12 @@ export const Navbar01 = React.forwardRef(({
                         <Button
                           variant="ghost"
                           effect="hoverUnderline"
-                          onClick={(e) => e.preventDefault()}
+                          onClick={(e) => handleNavClick(e, link.href, true)}
                           className={cn(
-                            "w-full justify-start rounded-md px-3 py-2 text-sm font-medium uppercase",
+                            "w-full justify-start rounded-md px-3 py-2 text-xs sm:text-sm font-medium uppercase",
                             link.active
-                              ? "bg-accent text-white hover:text-black"
-                              : "text-white/80 hover:text-black"
+                              ? "bg-white/10 text-white hover:text-black hover:bg-white"
+                              : "text-white/80 hover:text-black hover:bg-white"
                           )}
                         >
                           {link.label}
@@ -225,11 +316,20 @@ export const Navbar01 = React.forwardRef(({
           )}
           {/* Logo */}
           <button
-            onClick={(e) => e.preventDefault()}
-            className="flex items-center space-x-2 text-white hover:text-white/90 transition-colors cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push('/');
+            }}
+            className="flex items-center text-white hover:text-white/90 transition-colors cursor-pointer"
           >
-            <div className="text-2xl text-white">
-              <Image src="/programLogo.png" alt="Next Stop" width={100} height={100} />
+            <div className="relative w-16 h-8 sm:w-20 sm:h-10 md:w-24 md:h-12">
+              <Image 
+                src="/programLogo.png" 
+                alt="Next Stop" 
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
           </button>
         </div>
@@ -244,7 +344,7 @@ export const Navbar01 = React.forwardRef(({
                     <Button
                       variant="ghost"
                       effect="hoverUnderline"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => handleNavClick(e, link.href)}
                       className={cn(
                         "h-9 px-4 py-2 text-sm font-medium uppercase",
                         link.active
@@ -262,38 +362,51 @@ export const Navbar01 = React.forwardRef(({
         )}
         
         {/* Right side - CTA Button */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0 ml-auto">
           <Button
             size="sm"
             effect="expandIcon"
             icon={ArrowRightIcon}
             iconPlacement="right"
-            className="text-md font-medium px-6 py-3 h-9 rounded-full shadow-sm text-white hover:opacity-90"
+            className="text-xs sm:text-sm font-medium px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 h-8 sm:h-9 rounded-full shadow-sm text-white hover:opacity-90 whitespace-nowrap"
             style={{
               background: 'linear-gradient(90deg, #4C231F 12.02%, #8D413A 49.04%, #4C231F 91.83%)',
               border: 'none'
             }}
             onClick={(e) => {
               e.preventDefault();
-              if (onCtaClick) onCtaClick();
+              if (onCtaClick) {
+                onCtaClick();
+              } else {
+                router.push('/apply');
+              }
             }}
           >
-            {ctaText}
+            <span className="hidden sm:inline">{ctaText}</span>
+            <span className="sm:hidden">APPLY</span>
           </Button>
         </div>
       </div>
-    </header>
+    </motion.header>
     
     {/* Sub Navbar */}
     {isSubNavbarVisible && (
-      <div 
-        className={`w-full px-4 md:px-6 py-1 overflow-hidden transition-all duration-300 ease-in-out ${
-          isSubNavbarClosing ? 'opacity-0 max-h-0 py-0' : 'opacity-100 max-h-20'
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={isMounted && !isSubNavbarClosing ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+        transition={{
+          type: 'spring',
+          stiffness: 300,
+          damping: 30,
+          delay: 0.2
+        }}
+        className={`w-full px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 overflow-hidden transition-all duration-300 ease-in-out ${
+          isSubNavbarClosing ? 'opacity-0 max-h-0 py-0' : 'opacity-100 max-h-20 sm:max-h-24'
         }`}
         style={{ backgroundColor: '#F8DCD9' }}
       >
-        <div className="container mx-auto flex items-center justify-between max-w-screen-2xl gap-4">
-          <p className="text-sm md:text-base flex-1 text-left" style={{ color: '#782821' }}>
+        <div className="container mx-auto flex items-center justify-between max-w-screen-2xl gap-2 sm:gap-3 md:gap-4">
+          <p className="text-xs sm:text-sm md:text-base flex-1 text-left pr-2 sm:pr-0 leading-tight sm:leading-normal" style={{ color: '#782821' }}>
             {subNavbarText}
           </p>
           <button
@@ -307,10 +420,10 @@ export const Navbar01 = React.forwardRef(({
             style={{ color: '#4C231F' }}
             aria-label="Close banner"
           >
-            <CloseIcon className="w-4 h-4" />
+            <CloseIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
-      </div>
+      </motion.div>
     )}
     </div>
   );

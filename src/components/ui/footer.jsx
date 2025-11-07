@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Linkedin, X, Instagram } from 'lucide-react';
+import { Linkedin, Link, Instagram } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -13,17 +13,17 @@ export const Footer = () => {
   const socialLinks = [
     {
       icon: Linkedin,
-      href: '#',
+      href: 'https://www.linkedin.com/company/india-accelerator',
       label: 'LinkedIn',
     },
     {
-      icon: X,
-      href: '#',
-      label: 'X (Twitter)',
+      icon: Link,
+      href: 'https://indiaaccelerator.co/',
+      label: 'IA',
     },
     {
       icon: Instagram,
-      href: '#',
+      href: 'https://www.instagram.com/indiaaccelerator',
       label: 'Instagram',
     },
   ];
