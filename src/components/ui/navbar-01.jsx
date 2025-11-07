@@ -120,7 +120,7 @@ const defaultNavigationLinks = [
   { href: '#about', label: 'About' },
   { href: '#what-to-expect', label: 'What To Expect' },
   { href: '#eligibility-criteria', label: 'Eligibility Criteria' },
-  { href: '#why-bigshift', label: 'Why BIGShift?' },
+  { href: '#why-bigshift', label: 'Why Us?' },
   { href: '#timeline', label: 'Queries' },
 ];
 
@@ -299,7 +299,7 @@ export const Navbar01 = React.forwardRef(({
                           effect="hoverUnderline"
                           onClick={(e) => handleNavClick(e, link.href, true)}
                           className={cn(
-                            "w-full justify-start rounded-md px-3 py-2 text-xs sm:text-sm font-medium uppercase",
+                            "w-full justify-start rounded-md px-3 py-2 text-xs sm:text-sm font-medium ",
                             link.active
                               ? "bg-white/10 text-white hover:text-black hover:bg-white"
                               : "text-white/80 hover:text-black hover:bg-white"
@@ -346,7 +346,7 @@ export const Navbar01 = React.forwardRef(({
                       effect="hoverUnderline"
                       onClick={(e) => handleNavClick(e, link.href)}
                       className={cn(
-                        "h-9 px-4 py-2 text-sm font-medium uppercase",
+                        "h-9 px-4 py-2 text-sm font-medium",
                         link.active
                           ? "text-white hover:text-black"
                           : "text-white/80 hover:text-black"
