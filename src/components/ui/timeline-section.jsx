@@ -126,7 +126,7 @@ export const TimelineSection = () => {
               }}
               variants={itemVariants}
             >
-              Applications Close On 13 November 2025
+              Applications Close On 21st November 2025
             </motion.p>
 
             {/* Contact Information */}

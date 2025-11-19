@@ -120,7 +120,7 @@ export const ProgramExpectSection = () => {
     },
     {
       icon: Layers,
-      title: 'Growth Amplifier <br/>(IA ecosystem)',
+      title: <>Growth Amplifier<br />(IA ecosystem)</>,
       description: 'Unlock funding and pilot opportunities.',
     },
   ];

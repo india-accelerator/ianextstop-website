@@ -130,7 +130,7 @@ export const EligibilityCriteriaSection = () => {
     {
       number: '01',
       title: <>Stage of the<br />Startup</>,
-      description: 'Seed to Pre-Series Not ideal Idea-stage ventures without proof of concept or prototype',
+      description: <>Seed to Pre-Series<br />Not ideal Idea-stage ventures without proof of concept or prototype</>,
     },
     {
       number: '02',
